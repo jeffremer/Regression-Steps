@@ -1,6 +1,6 @@
 require 'json'
 require 'rest_client'
-require 'CSV'
+require 'fastercsv'
 
 class RegressionSteps
   attr_reader :url
@@ -40,7 +40,7 @@ end
 class Array
   def to_csv
     str=''
-    CSV::Writer.generate(str, "\t") do |csv|
+    FasterCSV.generate(str, :col_sep => "\t") do |csv|
       self.each do |r|
         csv << r
       end

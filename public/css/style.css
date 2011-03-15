@@ -1,0 +1,49 @@
+body {
+	font-family: Georgia;
+	color: #333;
+}
+
+#content {
+	width: 600px;
+	margin: 20px auto;
+}
+		
+p {
+	font-size: 30px;
+	margin-bottom: 20px;
+}
+ 
+p.center {
+	text-align: center;
+}
+
+p.error {
+	color: #990000;
+}
+
+small {
+	font-size: 14px;
+}
+
+label {
+	display: block;
+	float: left;
+	text-align: right;
+	width: 120px;
+}
+
+input[type="text"], input[type="password"] {
+	margin: 0 0 0 20px;
+	border: 1px solid #CECECE;
+	font-size: 30px;
+}
+
+input[type="submit"] {
+	font-size: 130%;
+	margin-left: 140px;
+}
+
+textarea {
+	width: 100%;
+	height: 300px;
+}

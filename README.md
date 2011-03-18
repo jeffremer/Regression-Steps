@@ -1,7 +1,6 @@
-# Regression Steps # 
+# Regression Steps
 
-A Ruby class, Sinatra web app, and command line tool for retrieving and formatting a regression step checklist from Scrumy user stories. — Read more click to edit
-Save   Cancel
+A Ruby class, Sinatra web app, and command line tool for retrieving and formatting a regression step checklist from Scrumy user stories.
 
 http:/rstep.heroku.com
 

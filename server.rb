@@ -10,9 +10,16 @@ get '/' do
 end
 
 post '/' do
-  steps = RegressionSteps.new(params[:project], params[:password])
+  @results = ""
+  idx=0
   begin
-    @results = steps.get().to_csv
+    params[:project].each{ |project|
+      name = project['name']
+      password = project['password']
+      steps = RegressionSteps.new(name, password)
+      @results << steps.get(idx == 0).to_csv
+      idx += 1
+    }
     erb :results
   rescue => e   
     @error = e.message

@@ -9,21 +9,21 @@ class RegressionSteps
     @url = "https://#{@project}:#{@password}@scrumy.com/api/scrumies/#{@project}/sprints/current.json"
   end
   
-  def get
+  def get(include_header=true)
     @url = "https://#{@project}:#{@password}@scrumy.com/api/scrumies/#{@project}/sprints/current.json"
     RestClient.get(url){|response, request, result, &block|
       case response.code
       when 200
-        process_response(response.to_str)
+        process_response(response.to_str, include_header)
       else
         response.return!(request, result, &block)
       end
     }  
   end
   
-  def process_response(response_text)
+  def process_response(response_text, include_header=true)
     response = JSON.parse(response_text)
-    response['sprint']['stories'].collect{|story|
+    rows = response['sprint']['stories'].collect{|story|
       if !story['story']['tasks'].nil?
         [story['story']['title']].push(
           story['story']['tasks'].collect{|task|
@@ -33,7 +33,9 @@ class RegressionSteps
       else
         [story['story']['title']]
       end
-    }.unshift(['Scrumy Item', 'Worked On'])
+    }
+    rows.unshift(['Scrumy Item'.upcase, 'Worked On'.upcase]) if include_header && !rows.nil?
+    rows
   end
 end
 

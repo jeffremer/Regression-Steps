@@ -4,10 +4,10 @@ $(document).ready(function(){
 	});
 	$(document).keyup(function(evt){
 		if(!evt.shiftKey) $('#add').val('Add Project');
-		if(evt.keyCode===187) {
+		if(evt.shiftKey && evt.keyCode===187) {
 			addRow();
 		}
-		if(evt.keyCode===189) {
+		if(evt.shiftKey && evt.keyCode===189) {
 			deleteRow();
 		}
 	});

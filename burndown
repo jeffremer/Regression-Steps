@@ -1,14 +1,14 @@
 #!/usr/bin/env ruby 
 
 # == Synopsis 
-#   Easily format a CSV spreadsheet of Scrumy stories and workers.
+#   Retrieve snapshot data from Scrumy projects
 #
 # == Examples
-#   This command retrieves Scrumy stories and formats a regression test plan.
-#     regression project_name
+#   This command retrieves snapshot data
+#     regression project_name:password [project_name:password] 
 #
 # == Usage 
-#   regression [options] project_name
+#   burndown [options] project_name:password [project_name:password] 
 #
 #   For help use: regression -h
 #
@@ -105,8 +105,11 @@ class App
     
     # Setup the arguments
     def process_arguments
-      @project = @arguments[0]
-      @password = @arguments[1] || ""
+      @projects = []
+      @arguments.each{|arg|
+        p = arg.split(':')
+        @projects << { "name" => p[0], "password" => p[1]}
+      }      
     end
     
     def output_help
@@ -123,10 +126,26 @@ class App
     end
     
     def process_command
-      @password = ask("Enter your password:  ") { |q| q.echo = "*" } if @password.empty?
-      client = ScrumyClient.new(@project, @password)
-      puts "Retrieving from #{steps.url}" if @options.verbose
-      puts client.regression_steps.to_csv
+      days = Hash.new
+      @projects.each {|project|
+        client = ScrumyClient.new(project['name'], project['password'])
+        snapshots = client.snapshots
+        snapshots.each{|snapshot|
+          s = snapshot['snapshot']
+          if !days.has_key?(s['snapshot_date'])
+            days[s['snapshot_date']] = {'total' => s['hours_total'], 'remaining'=>s['hours_remaining']}
+          else
+            day = days[s['snapshot_date']]
+            day['total'] += s['hours_total']
+            day['remaining'] += s['hours_remaining']
+          end              
+        }
+      }
+      puts "Day\t\tTotal\tRemaining"
+      days.keys.each{|key|
+        puts "#{key}\t#{days[key]['total']}\t#{days[key]['remaining']}"
+      }
+
     end
 end
 

@@ -31,7 +31,7 @@ require 'ostruct'
 require 'highline/import'
 require 'date'
 
-require 'regression_steps'
+require 'scrumy_client'
 
 class App
   VERSION = '0.0.1'
@@ -124,9 +124,9 @@ class App
     
     def process_command
       @password = ask("Enter your password:  ") { |q| q.echo = "*" } if @password.empty?
-      steps = RegressionSteps.new(@project, @password)
+      client = ScrumyClient.new(@project, @password)
       puts "Retrieving from #{steps.url}" if @options.verbose
-      puts steps.get().to_csv
+      puts client.regression_steps.to_csv
     end
 end
 

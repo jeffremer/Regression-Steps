@@ -3,7 +3,7 @@ if ENV['RACK_ENV'] != 'production'
 end
 
 require 'sinatra'
-require 'regression_steps.rb'
+require 'scrumy_client'
 
 get '/' do
   erb :index
@@ -16,8 +16,8 @@ post '/' do
     params[:project].each{ |project|
       name = project['name']
       password = project['password']
-      steps = RegressionSteps.new(name, password)
-      @results << steps.get(idx == 0).to_csv
+      client = ScrumyClient.new(name, password)
+      @results << client.regression_steps(idx == 0).to_csv
       idx += 1
     }
     erb :results

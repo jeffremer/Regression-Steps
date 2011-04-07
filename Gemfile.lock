@@ -1,4 +1,11 @@
 GIT
+  remote: https://github.com/archiloque/rest-client.git
+  revision: 8cba835c9b5c4a2d99eb43b2e87bbbeee0bccb9a
+  specs:
+    rest-client (1.6.1)
+      mime-types (>= 1.16)
+
+GIT
   remote: https://github.com/mattetti/googlecharts.git
   revision: 87574fe3d1ad1238bd7f250a6fa7906187f64f95
   specs:
@@ -8,8 +15,6 @@ GEM
   specs:
     mime-types (1.16)
     rack (1.2.1)
-    rest-client (1.6.1)
-      mime-types (>= 1.16)
     sinatra (0.9.2)
       rack (>= 0.9.1)
 
@@ -18,5 +23,5 @@ PLATFORMS
 
 DEPENDENCIES
   googlecharts!
-  rest-client
+  rest-client!
   sinatra

@@ -1,5 +1,5 @@
 source :gemcutter
-gem "googlecharts", :git => "git://github.com/mattetti/googlecharts.git"
+gem "googlecharts", :path => "vendor/private_gems/googlecharts"
 gem "sinatra"
 gem "json"
 gem "fastercsv"

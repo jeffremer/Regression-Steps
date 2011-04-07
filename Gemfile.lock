@@ -5,9 +5,8 @@ GIT
     rest-client (1.6.1)
       mime-types (>= 1.16)
 
-GIT
-  remote: git://github.com/mattetti/googlecharts.git
-  revision: 87574fe3d1ad1238bd7f250a6fa7906187f64f95
+PATH
+  remote: vendor/private_gems/googlecharts
   specs:
     googlecharts (1.6.1)
 

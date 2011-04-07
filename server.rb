@@ -62,6 +62,8 @@ post '/burndown' do
       :encoding => 'text',
       :custom => "chxp=0,0,1,7&chds=0,#{expected.first},0,#{expected.first}"        
     )
+    # Workaround for datascaling
+    @graph_url.gsub!(/chds=-1/, 'chds=0')
     
     erb :graph
   rescue => e   

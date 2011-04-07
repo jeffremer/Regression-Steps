@@ -9,12 +9,23 @@ class ScrumyClient
   end
 
   def sprint(id="current")
-    get("https://#{@project}:#{@password}@scrumy.com/api/scrumies/#{@project}/sprints/#{id}.json", 'sprint')
+    if id == "current"
+      @url = "https://#{@project}:#{@password}@scrumy.com/api/scrumies/#{@project}/sprints/#{id}.json"
+    else
+      @url = "https://#{@project}:#{@password}@scrumy.com/api/sprints/#{id}.json"
+    end
+    get(@url, 'sprint')
+  end
+  
+  def sprints
+    @url = "https://#{@project}:#{@password}@scrumy.com/api/scrumies/#{@project}/sprints.json"
+    get(url, nil)
   end
 
   def snapshots(id="current")
     sprint_id = sprint(id)['id']
-    get("https://#{@project}:#{@password}@scrumy.com/api/sprints/#{sprint_id}/snapshots.json", nil)
+    @url = "https://#{@project}:#{@password}@scrumy.com/api/sprints/#{sprint_id}/snapshots.json"
+    get(@url, nil)
   end
   
   def regression_steps(include_header=true)

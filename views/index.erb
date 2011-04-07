@@ -1,37 +1,4 @@
-
-	<p><small>Enter your <a href="http://scrumy.com" target="_blank" title="scrumy">Scrumy</a> project name and password to generate a TSV list of user stories and workers.</small></p>
-		
-	<% if !@error.nil? and !@error.empty? %>
-		<p class="center error">Error: <%= @error %></p>
-	<% end %>
-	<form action="/" method="POST" id="form">
-		<table>
-			<thead>
-				<tr>
-					<td>
-						<label for="project">Project</label>
-					</td>
-					<td colspan="2">
-						<label for="password">Password</label>
-					</td>
-				</tr>
-			</thead>
-			<tbody id="formbody">
-				<tr id="formrow">
-					<td>
-						<input type="text" placeholder="project name" name="project[][name]"/>
-					</td>
-					<td>
-						<input type="password" placeholder="password" name="project[][password]">
-					</td>
-					<td>
-						<a href="#" style="display:none;" class="delete">X</a>
-					</td>
-				</tr>
-			</tbody>
-		<table>
-		<p>
-			<input type="button" name="add" id="add" value="Add Project" />
-			<input type="submit" name="submit" value="Submit" />
-		</p>
-	</form>
+<ul>
+	<li><a href='/regression'>Regression Steps</a></li>
+	<li><a href='/burndown'>Burndown Chart</a></li>	
+</ul>	

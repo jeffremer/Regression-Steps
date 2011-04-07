@@ -35,10 +35,23 @@ label {
 	font-size: 30px;
 }
 
-input[type="text"], input[type="password"] {
+tfoot label {
+	width: 100%;
+}
+
+tbody{
+	margin-bottom: 20px
+}
+
+tbody input[type="text"], input[type="password"] {
 	border: 1px solid #CECECE;
 	font-size: 30px; 
-	width: 280px;
+	width: 200px;
+}
+
+.regression tbody input[type="text"],
+.regression tbody input[type="password"] {
+	width: 300px;
 }
 
 input[type="submit"], input[type="button"] {

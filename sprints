@@ -1,14 +1,14 @@
 #!/usr/bin/env ruby 
 
 # == Synopsis 
-#   Retrieve snapshot data from Scrumy projects
+#   Easily format a CSV spreadsheet of Scrumy stories and workers.
 #
 # == Examples
-#   This command retrieves snapshot data
-#     regression project_name:password [project_name:password] 
+#   This command retrieves Scrumy stories and formats a regression test plan.
+#     regression project_name
 #
 # == Usage 
-#   burndown [options] project_name:password [project_name:password] 
+#   regression [options] project_name
 #
 #   For help use: regression -h
 #
@@ -30,8 +30,6 @@ require 'rdoc/usage'
 require 'ostruct'
 require 'highline/import'
 require 'date'
-
-require 'gchart'
 
 require 'scrumy_client'
 
@@ -80,7 +78,7 @@ class App
       opts.on('-h', '--help')       { output_help }
       opts.on('-V', '--verbose')    { @options.verbose = true }  
       opts.on('-q', '--quiet')      { @options.quiet = true }
-      opts.on('-p', '--password [password]')      { |password| @options.password = password }      
+      opts.on('-p', '--password [password]')      { |password| @options.password = password }            
             
       opts.parse!(@arguments) rescue return false
       
@@ -91,7 +89,7 @@ class App
     # Performs post-parse processing on options
     def process_options
       @options.verbose = false if @options.quiet
-      @password = @options.password || ""
+      @password = @options.password || ""      
     end
     
     def output_options
@@ -109,11 +107,7 @@ class App
     
     # Setup the arguments
     def process_arguments
-      @projects = []
-      @arguments.each{|arg|
-        p = arg.split('/')
-        @projects << {"name"=>p[0], "sprint"=>p[1] || "current"}
-      }
+      @projects = @arguments
     end
     
     def output_help
@@ -131,51 +125,17 @@ class App
     
     def process_command
       @password = ask("Enter your password:  ") { |q| q.echo = "*" } if @password.empty?
-      days = Hash.new
-      @projects.each {|project|
-        client = ScrumyClient.new(project['name'], @password)
-        snapshots = client.snapshots(project['sprint'])
-        snapshots.each{|snapshot|
-          s = snapshot['snapshot']
-          if !days.has_key?(s['snapshot_date'])
-            days[s['snapshot_date']] = {'date'=>s['snapshot_date'], 'total' => s['hours_total'], 'remaining'=>s['hours_remaining']}
-          else
-            day = days[s['snapshot_date']]
-            day['total'] += s['hours_total']
-            day['remaining'] += s['hours_remaining']
-          end              
+      @projects.each{|project|
+        client = ScrumyClient.new(project, @password)
+        puts "Retrieving from #{steps.url}" if @options.verbose
+        sprints = client.sprints
+        puts project
+        puts "ID\tStart Date"      
+        sprints.each{|sprint|
+          puts "#{sprint['sprint']['id']}\t#{sprint['sprint']['start_date']}"
         }
-      }
-      
-      if days.empty?
-        puts "No data for this sprint"
-        exit
-      end
-      
-      puts "Day\t\tTotal\tRemaining" if @options.verbose
-      sorted = days.values.sort_by{|day|day['date']}
-      sorted.each{|day|
-        puts "#{day['date']}\t#{day['total']}\t#{day['remaining']}" if @options.verbose
-      }
-
-      actual = sorted.collect{|day|day['remaining']}.unshift(sorted.first['total'])
-      (7-actual.size).times{|e|actual.push(-1)}
-      expected = [sorted.first['total'],0]
-     
-      start_date = Date.strptime(sorted.first['date'], "%Y-%m-%d")
-      
-      puts Gchart.line(
-        :title => "Burndown #{(start_date-1).strftime("%m-%d")} to #{(start_date+6).strftime("%m-%d")}",
-        :legend => ['Actual', 'Expected'],
-        :line_colors => "00C25B,007EFF",
-        :size=> '500x375',
-        :data=>[actual, expected],
-        :axis_with_labels => 'x,y',
-        :axis_labels => [[start_date-1, start_date+6].collect{|d|d.strftime("%m-%d")}.unshift(0), expected.reverse],
-        :axis_range => [[0,7]],
-        :encoding => 'text',
-        :custom => "chxp=0,0,1,7&chds=0,#{expected.first},0,#{expected.first}"        
-      )
+        puts "------------"        
+      }      
     end
 end
 

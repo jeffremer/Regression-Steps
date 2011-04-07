@@ -12,6 +12,7 @@ GIT
     googlecharts (1.6.1)
 
 GEM
+  remote: http://rubygems.org/
   specs:
     mime-types (1.16)
     rack (1.2.1)

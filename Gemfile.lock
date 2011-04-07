@@ -1,22 +1,13 @@
-GIT
-  remote: git://github.com/archiloque/rest-client.git
-  revision: 8cba835c9b5c4a2d99eb43b2e87bbbeee0bccb9a
-  specs:
-    rest-client (1.6.1)
-      mime-types (>= 1.16)
-
-PATH
-  remote: vendor/private_gems/googlecharts
-  specs:
-    googlecharts (1.6.1)
-
 GEM
   remote: http://rubygems.org/
   specs:
     fastercsv (1.5.4)
+    googlecharts (1.6.1)
     json (1.5.1)
     mime-types (1.16)
     rack (1.2.2)
+    rest-client (1.6.1)
+      mime-types (>= 1.16)
     sinatra (1.2.1)
       rack (~> 1.1)
       tilt (>= 1.2.2, < 2.0)
@@ -27,7 +18,7 @@ PLATFORMS
 
 DEPENDENCIES
   fastercsv
-  googlecharts!
+  googlecharts
   json
-  rest-client!
+  rest-client
   sinatra
